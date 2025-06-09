@@ -26,7 +26,7 @@ You can use the following entry in your MCP servers definition
             "GOOGLE_APPLICATION_CREDENTIALS",
             "--mount",
             "type=bind,source=/home/vscode/.config/gcloud,target=/app/.config/gcloud,ro",
-            "cloud-run-mcp-proxy:latest"
+            "jhginn/cloud-run-mcp-proxy:latest" // Or use a date tag from https://hub.docker.com/repository/docker/jhginn/cloud-run-mcp-proxy/general
         ],
         "env": {
             "CLOUD_RUN_MCP_SERVER_URL": "https://www.my.app.url.com",
