@@ -4,6 +4,46 @@ Proxy to access remote MCP servers running on GCP Cloud Run.
 
 This project provides a way to securely access Model Context Protocol (MCP) servers that are deployed on Google Cloud Run. It handles authentication and proxies requests to the appropriate Cloud Run service.
 
+## Using this MCP server
+
+You can use the following entry in your MCP servers definition
+
+```json
+{
+    "mcpServers": {
+        "mcp-contract-registry": {
+        "disabled": false,
+        "timeout": 60,
+        "type": "stdio",
+        "command": "docker",
+        "args": [
+            "run",
+            "-i",
+            "--rm",
+            "-e",
+            "CLOUD_RUN_MCP_SERVER_URL",
+            "-e",
+            "GOOGLE_APPLICATION_CREDENTIALS",
+            "--mount",
+            "type=bind,source=/home/vscode/.config/gcloud,target=/app/.config/gcloud,ro",
+            "cloud-run-mcp-proxy:latest"
+        ],
+        "env": {
+            "CLOUD_RUN_MCP_SERVER_URL": "https://www.my.app.url.com",
+            "GOOGLE_APPLICATION_CREDENTIALS": "/path/to/.config/gcloud/application_default_credentials.json"
+        }
+        }
+    }
+}
+```
+
+Make sure to:
+
+- Log into gcloud on your host device
+- Use the correct GOOGLE_APPLICATION_CREDENTIALS path. Typically, this is your home directory.
+
+This only works for cloud run services that use `Streamable HTTP transport`, and that are secured using IAM.
+
 ## Getting Started for Developers
 
 This guide will help you set up the project for local development.
